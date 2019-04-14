@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">search-image</string>
+    <string name="hint_search">인물 검색</string>
+    <string name="action_search">search</string>
+    <string name="msg_retry_input">다시 입력하세요.</string>
+    <string name="msg_not_found">검색 결과를 찾을 수 없습니다.</string>
+    <string name="msg_not_avaliable">분석 결과가 나오질 않습니다.</string>
+    <string name="male">남성</string>
+    <string name="female">여성</string>
+    <string name="text_age">나이 : %d</string>
+    <string name="text_gender">성별 : %s</string>
+    <string name="text_accuracy">정확도 : %d</string>
+</resources>
