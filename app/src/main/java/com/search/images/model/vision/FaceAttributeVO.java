@@ -1,9 +1,8 @@
-package com.search.images.model;
+package com.search.images.model.vision;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@SuppressWarnings("WeakerAccess")
 @NoArgsConstructor
 @Getter
 public class FaceAttributeVO {

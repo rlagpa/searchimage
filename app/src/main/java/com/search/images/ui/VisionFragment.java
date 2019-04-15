@@ -1,7 +1,6 @@
 package com.search.images.ui;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -17,10 +16,12 @@ import com.search.images.R;
 import com.search.images.config.Constants;
 import com.search.images.di.DaggerSearchImageComponent;
 import com.search.images.di.SearchImageModule;
-import com.search.images.model.FaceVO;
-import com.search.images.model.VisionVO;
+import com.search.images.model.vision.FaceVO;
+import com.search.images.model.vision.VisionVO;
 import com.search.images.service.network.HttpResponseListener;
 import com.search.images.service.network.SearchService;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -40,11 +41,10 @@ public class VisionFragment extends Fragment implements HttpResponseListener<Vis
 
     private String imageUrl;
 
-    public static VisionFragment newInstance(String imageUrl, boolean isHorizontal) {
+    public static VisionFragment newInstance(String imageUrl) {
         VisionFragment fragment = new VisionFragment();
         Bundle arg = new Bundle();
-        arg.putString(Constants.BUNDLE_IMAGE_URL, imageUrl);
-        arg.putBoolean(Constants.BUNDLE_HORIZONTAL_IMAGE, isHorizontal);
+        arg.putString(Constants.Bundle.IMAGE_URL, imageUrl);
         fragment.setArguments(arg);
 
         return fragment;
@@ -58,9 +58,7 @@ public class VisionFragment extends Fragment implements HttpResponseListener<Vis
                 .searchImageModule(new SearchImageModule(getContext()))
                 .build().inject(this);
 
-        if (getArguments() != null) {
-            imageUrl = getArguments().getString(Constants.BUNDLE_IMAGE_URL);
-        }
+        imageUrl = getArguments().getString(Constants.Bundle.IMAGE_URL);
         loadData();
     }
 
@@ -86,9 +84,10 @@ public class VisionFragment extends Fragment implements HttpResponseListener<Vis
         searchService.getImageVision(this, imageUrl);
     }
 
+
     @Override
     public void onSuccess(Response<VisionVO> response) {
-        if (response.body() == null || response.body().getResult().getFaces().size() == 0) {
+        if (isInvalidReponse(response)) {
             Toast.makeText(getContext(), getString(R.string.msg_not_avaliable), Toast.LENGTH_SHORT).show();
             return;
         }
@@ -101,10 +100,17 @@ public class VisionFragment extends Fragment implements HttpResponseListener<Vis
         text.setText(builder.toString());
     }
 
+    private boolean isInvalidReponse(Response<VisionVO> response) {
+        List<FaceVO> faces = response.body().getResult().getFaces();
+        if (response.body() == null || faces == null || faces.size() == 0) {
+            return true;
+        }
+        return false;
+    }
 
     public void setResult(StringBuilder builder, FaceVO face) {
         int age = Math.round(face.getFacial_attributes().getAge());
-        boolean isFemale = (face.getFacial_attributes().getGender().getFemale() > face.getFacial_attributes().getGender().getMale());
+        boolean isFemale = (face.getFacial_attributes().getGender().getFemale() < face.getFacial_attributes().getGender().getMale())? false:  true;
         int accuracy = Math.round(face.getScore() * 100);
 
         builder.append(getString(R.string.text_age, age));
@@ -120,9 +126,9 @@ public class VisionFragment extends Fragment implements HttpResponseListener<Vis
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString(Constants.BUNDLE_IMAGE_URL, imageUrl);
+        savedInstanceState.putString(Constants.Bundle.IMAGE_URL, imageUrl);
     }
 
 }

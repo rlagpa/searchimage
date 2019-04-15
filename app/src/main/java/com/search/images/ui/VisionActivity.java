@@ -17,13 +17,14 @@ public class VisionActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setContentView(R.layout.activity_vision);
 
-        if(savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            VisionFragment fragment = VisionFragment.newInstance(getIntent().getStringExtra(Constants.EXTRA_IMAGE_URL),
-                    getIntent().getBooleanExtra(Constants.EXTRA_HORIZONTAL_IMAGE, true));
-            transaction.replace(R.id.visionFragment, fragment);
-            transaction.commit();
+        if (savedInstanceState != null) {
+            return;
         }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        VisionFragment fragment = VisionFragment.newInstance(getIntent().getStringExtra(Constants.Intent.EXTRA_IMAGE_URL));
+        transaction.replace(R.id.visionFragment, fragment);
+        transaction.commit();
     }
 
 }

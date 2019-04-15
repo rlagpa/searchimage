@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.search.images.R;
 import com.search.images.config.Constants;
-import com.search.images.model.DocumentVO;
+import com.search.images.model.search.DocumentVO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,11 +85,9 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
         void onClick() {
             int position = getLayoutPosition();
             DocumentVO item = voList.get(position);
-            boolean isHorizontal = (item.width > item.height)? true : false;
 
             Intent intent = new Intent(context, VisionActivity.class);
-            intent.putExtra(Constants.EXTRA_IMAGE_URL, item.image_url);
-            intent.putExtra(Constants.EXTRA_HORIZONTAL_IMAGE, isHorizontal);
+            intent.putExtra(Constants.Intent.EXTRA_IMAGE_URL, item.image_url);
             context.startActivity(intent);
         }
     }

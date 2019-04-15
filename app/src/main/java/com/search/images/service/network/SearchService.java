@@ -1,8 +1,8 @@
 package com.search.images.service.network;
 
-import com.search.images.config.Constants;
-import com.search.images.model.SearchResultVO;
-import com.search.images.model.VisionVO;
+import com.search.images.config.APIProvider;
+import com.search.images.model.search.SearchResultVO;
+import com.search.images.model.vision.VisionVO;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -16,13 +16,20 @@ public class SearchService {
     private HttpImageApi httpImageApi = HttpImageApi.retrofit.create(HttpImageApi.class);
     private HttpVisionApi httpVisionApi = HttpVisionApi.retrofit.create(HttpVisionApi.class);
 
-    public<T> void getSearchList(HttpResponseListener<T> listener, String query, int pageNum) {
-        final Call<SearchResultVO> call = httpImageApi.getSearchResult(Constants.CURRENT_IMAGE_TYPE.getAuthorization(), query, pageNum, 20);
-        call.enqueue(new HttpCallback(listener));
+    public void getSearchList(HttpResponseListener<SearchResultVO> listener, String query, int pageNum) {
+        final Call<SearchResultVO> call =
+                httpImageApi.getSearchResult(APIProvider.current().autoToken(), query, pageNum, 20);
+        call.enqueue(new HttpCallback<>(listener));
     }
 
-    public<T> void getImageVision(HttpResponseListener<T> listener, String imageUrl) {
-        final Call<VisionVO> call = httpVisionApi.getSearchResult(Constants.CURRENT_VISION_TYPE.getAuthorization(), imageUrl);
-        call.enqueue(new HttpCallback(listener));
+    public void getImageVision(HttpResponseListener<VisionVO> listener, String imageUrl) {
+        final Call<VisionVO> call =
+                httpVisionApi.getSearchResult(APIProvider.current().autoToken(), imageUrl);
+        call.enqueue(new HttpCallback<>(listener));
+    }
+
+    public void initializeSearchCondition() {
+        pageNumGenerator.set(1);
     }
 }
+

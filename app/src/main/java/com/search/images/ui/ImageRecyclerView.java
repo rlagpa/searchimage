@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import com.search.images.model.SearchResultVO;
+import com.search.images.model.search.SearchResultVO;
 
 public class ImageRecyclerView extends RecyclerView {
     private ImageRecyclerAdapter adapter;

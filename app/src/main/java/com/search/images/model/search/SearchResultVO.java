@@ -1,4 +1,4 @@
-package com.search.images.model;
+package com.search.images.model.search;
 
 import java.util.List;
 
