@@ -1,4 +1,4 @@
-package com.search.images.service.network;
+package com.search.images.service;
 
 import com.search.images.config.APIProvider;
 import com.search.images.model.vision.VisionVO;
@@ -20,5 +20,6 @@ public interface HttpVisionApi {
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(APIProvider.current().detailHost())
             .addConverterFactory(GsonConverterFactory.create())
+            .callbackExecutor(ApiResultExecutors.callbackExecutor)
             .build();
 }

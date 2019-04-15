@@ -19,17 +19,19 @@ import com.search.images.config.Constants;
 import com.search.images.di.DaggerSearchImageComponent;
 import com.search.images.di.SearchImageModule;
 import com.search.images.model.search.SearchResultVO;
-import com.search.images.service.network.HttpResponseListener;
-import com.search.images.service.network.SearchService;
+import com.search.images.service.SearchService;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Response;
 
-public class ImageFragment extends Fragment implements HttpResponseListener<SearchResultVO> {
+public class ImageFragment extends Fragment {
 
     @Inject
     ImageRecyclerAdapter adapter;
@@ -42,7 +44,7 @@ public class ImageFragment extends Fragment implements HttpResponseListener<Sear
     protected EditText textSearch;
 
     LinearLayoutManager layoutManager;
-    int pageNum = 1;
+    int nextPageNum = 1;
     boolean isLastPage;
 
     @Override
@@ -52,23 +54,17 @@ public class ImageFragment extends Fragment implements HttpResponseListener<Sear
         DaggerSearchImageComponent.builder()
                 .searchImageModule(new SearchImageModule(getContext()))
                 .build().inject(this);
-
-        if(savedInstanceState != null) {
-            textSearch.setText(savedInstanceState.getString(Constants.Bundle.QUERY));
-            loadData();
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        hideKeyboard();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_recyclerview, container, false);
         ButterKnife.bind(this, view);
+
+        if(savedInstanceState != null) {
+            textSearch.setText(savedInstanceState.getString(Constants.Bundle.QUERY));
+            loadData();
+        }
 
         return view;
     }
@@ -91,7 +87,7 @@ public class ImageFragment extends Fragment implements HttpResponseListener<Sear
     }
 
     public void initailize() {
-        searchService.initializeSearchCondition();
+        nextPageNum = 1;
         adapter.initializeList();
     }
 
@@ -101,19 +97,32 @@ public class ImageFragment extends Fragment implements HttpResponseListener<Sear
             return;
         }
 
-        searchService.getSearchList(this, query, pageNum);
+        searchService.search(query, nextPageNum);
     }
 
     @Override
-    public void onSuccess(Response<SearchResultVO> response) {
-        if (response.body() == null) {
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+        hideKeyboard();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSearchResult(SearchResultVO result) {
+        if (result.isInvalid()) {
             Toast.makeText(getContext(), getString(R.string.msg_not_found), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        isLastPage = response.body().getMeta().is_end();
-        pageNum = response.body().getMeta().getPageNum();
-        recyclerView.setData(response.body());
+        isLastPage = result.getMeta().is_end();
+        nextPageNum++;
+        recyclerView.setData(result);
     }
 
     @Override

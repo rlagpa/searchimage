@@ -2,7 +2,7 @@ package com.search.images.di;
 
 import android.content.Context;
 
-import com.search.images.service.network.SearchService;
+import com.search.images.service.SearchService;
 import com.search.images.ui.ImageRecyclerAdapter;
 
 import javax.inject.Singleton;

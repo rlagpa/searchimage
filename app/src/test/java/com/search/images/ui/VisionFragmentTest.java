@@ -1,7 +1,5 @@
 package com.search.images.ui;
 
-import com.search.images.service.network.SearchService;
-
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.search.images.service.network;
+package com.search.images.service;
 
 import com.search.images.config.APIProvider;
 import com.search.images.model.search.SearchResultVO;
@@ -23,5 +23,6 @@ public interface HttpImageApi {
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(APIProvider.current().searchHost())
             .addConverterFactory(GsonConverterFactory.create())
+            .callbackExecutor(ApiResultExecutors.callbackExecutor)
             .build();
 }
