@@ -1,6 +1,7 @@
 package com.search.images.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -34,11 +35,10 @@ public class VisionFragment extends Fragment implements HttpResponseListener<Vis
 
     @BindView(R.id.image_vision)
     protected ImageView image;
-    @BindView(R.id.text_vision)
+    @BindView(R.id.text_vision_info)
     protected TextView text;
 
     private String imageUrl;
-    private boolean isHorizontal;
 
     public static VisionFragment newInstance(String imageUrl, boolean isHorizontal) {
         VisionFragment fragment = new VisionFragment();
@@ -58,8 +58,9 @@ public class VisionFragment extends Fragment implements HttpResponseListener<Vis
                 .searchImageModule(new SearchImageModule(getContext()))
                 .build().inject(this);
 
-        imageUrl = getArguments().getString(Constants.BUNDLE_IMAGE_URL);
-        isHorizontal = getArguments().getBoolean(Constants.BUNDLE_HORIZONTAL_IMAGE);
+        if (getArguments() != null) {
+            imageUrl = getArguments().getString(Constants.BUNDLE_IMAGE_URL);
+        }
         loadData();
     }
 
@@ -85,7 +86,6 @@ public class VisionFragment extends Fragment implements HttpResponseListener<Vis
         searchService.getImageVision(this, imageUrl);
     }
 
-
     @Override
     public void onSuccess(Response<VisionVO> response) {
         if (response.body() == null || response.body().getResult().getFaces().size() == 0) {
@@ -104,7 +104,7 @@ public class VisionFragment extends Fragment implements HttpResponseListener<Vis
 
     public void setResult(StringBuilder builder, FaceVO face) {
         int age = Math.round(face.getFacial_attributes().getAge());
-        boolean isFemale = (face.getFacial_attributes().getGender().getFemale() < face.getFacial_attributes().getGender().getMale())? false:  true;
+        boolean isFemale = (face.getFacial_attributes().getGender().getFemale() > face.getFacial_attributes().getGender().getMale());
         int accuracy = Math.round(face.getScore() * 100);
 
         builder.append(getString(R.string.text_age, age));
@@ -120,7 +120,7 @@ public class VisionFragment extends Fragment implements HttpResponseListener<Vis
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString(Constants.BUNDLE_IMAGE_URL, imageUrl);
     }

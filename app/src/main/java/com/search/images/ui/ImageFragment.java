@@ -135,38 +135,21 @@ public class ImageFragment extends Fragment implements HttpResponseListener<Sear
     }
 
     RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
-        int previousTotal;
-        int firstVisibleItem;
-        int visibleItemCount;
-        int totalItemCount;
-        int visibleThreshold = 5;
-        boolean loading = true;
-
+        final int THRESHOLD = 5;
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
+            int totalItemCount = layoutManager.getItemCount();
+            int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+            boolean isReachedBottom = lastVisiblePosition + THRESHOLD >= totalItemCount;
 
-            if (isLastPage) {
+            if (totalItemCount <= 0 || isLastPage) {
                 return;
             }
-
-            visibleItemCount = recyclerView.getChildCount();
-            totalItemCount = layoutManager.getItemCount();
-            firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
-
-            if (loading) {
-                if (totalItemCount > previousTotal) {
-                    loading = false;
-                    previousTotal = totalItemCount;
-                }
-            }
-            if (!loading && (totalItemCount - visibleItemCount)
-                    <= (firstVisibleItem + visibleThreshold)) {
-
+            if(isReachedBottom) {
                 loadData();
-
-                loading = true;
             }
+
         }
     };
 

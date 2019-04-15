@@ -13,10 +13,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/text_display_site_name" />
+        app:layout_constraintBottom_toTopOf="@+id/text_vision_info" />
 
     <TextView
-        android:id="@+id/text_vision"
+        android:id="@+id/text_vision_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
