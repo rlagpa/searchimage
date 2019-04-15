@@ -10,9 +10,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 
-/**
- * use retrofit http client library request information
- */
 public interface HttpImageApi {
     @GET("v2/search/image")
     Call<SearchResultVO> getSearchResult(@Header("authorization") String authorization,

@@ -12,9 +12,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by hyemi on 15/04/2019.
- */
 public interface HttpApiCallback<T> extends Callback<T> {
 
     default void sendEvent(T result) {
@@ -45,7 +42,7 @@ class VisionApiCallback implements HttpApiCallback<VisionVO> {
 
     @Override
     public void onResponse(Call<VisionVO> call, Response<VisionVO> response) {
-        if (response.body() == null) {
+        if (response.body() == null || response.body().getResult() == null) {
             sendEvent(VisionVO.INVALID);
         }
 

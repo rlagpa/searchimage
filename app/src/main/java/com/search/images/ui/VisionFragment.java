@@ -24,6 +24,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -103,25 +105,20 @@ public class VisionFragment extends Fragment {
             return;
         }
 
-        StringBuilder builder = new StringBuilder();
-        for(FaceVO face : result.getResult().getFaces()) {
-            setResult(builder, face);
-        }
-
-        text.setText(builder.toString());
+        text.setText(
+                result.getResult().getFaces().stream()
+                        .map(this::toFaceString)
+                        .collect(Collectors.joining("\n")));
     }
 
-    public void setResult(StringBuilder builder, FaceVO face) {
-        int age = Math.round(face.getFacial_attributes().getAge());
-        boolean isFemale = (face.getFacial_attributes().getGender().getFemale() < face.getFacial_attributes().getGender().getMale())? false:  true;
-        int accuracy = Math.round(face.getScore() * 100);
-
-        builder.append(getString(R.string.text_age, age));
+    public String toFaceString(FaceVO face) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(getString(R.string.text_age, face.age()));
         builder.append("   ");
-        builder.append(getString(R.string.text_gender, (isFemale)? getString(R.string.female) : getString(R.string.male)));
+        builder.append(getString(R.string.text_gender, (face.isFemail())? getString(R.string.female) : getString(R.string.male)));
         builder.append("   ");
-        builder.append(getString(R.string.text_accuracy, accuracy));
-        builder.append("\n");
+        builder.append(getString(R.string.text_accuracy, face.accuracy()));
+        return builder.toString();
     }
 
     @Override

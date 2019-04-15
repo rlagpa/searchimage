@@ -8,7 +8,6 @@ import com.search.images.R;
 
 import butterknife.ButterKnife;
 
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
