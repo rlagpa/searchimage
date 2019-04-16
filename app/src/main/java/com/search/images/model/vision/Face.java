@@ -12,6 +12,7 @@ public class Face {
     final String MALE = "남성";
 
     public String toString(String age, String gender, String accurancy) {
+        @SuppressWarnings("StringBufferReplaceableByString")
         StringBuilder builder = new StringBuilder();
         builder.append(String.format(age, age()));
         builder.append("   ");

@@ -1,5 +1,7 @@
 package com.search.images.service;
 
+import android.support.annotation.NonNull;
+
 import com.search.images.model.search.SearchResult;
 import com.search.images.model.vision.Face;
 import com.search.images.model.vision.Vision;
@@ -17,23 +19,29 @@ public interface HttpApiCallback<T> extends Callback<T> {
     default void sendEvent(T result) {
         EventBus.getDefault().post(result);
     }
+    T convertResponse(Response<T> response);
 }
 
 class SearchApiCallback implements HttpApiCallback<SearchResult> {
 
     @Override
-    public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {
+    public void onResponse(@NonNull Call<SearchResult> call, @NonNull Response<SearchResult> response) {
+        sendEvent(convertResponse(response));
+    }
+
+    @Override
+    public SearchResult convertResponse(Response<SearchResult> response) {
         if (response.body() == null) {
-            sendEvent(SearchResult.INVALID);
+            return SearchResult.INVALID;
         } else {
             SearchResult result = response.body();
             result.setInvalid(false);
-            sendEvent(result);
+            return result;
         }
     }
 
     @Override
-    public void onFailure(Call<SearchResult> call, Throwable t) {
+    public void onFailure(@NonNull Call<SearchResult> call, @NonNull Throwable t) {
 
     }
 }
@@ -41,23 +49,28 @@ class SearchApiCallback implements HttpApiCallback<SearchResult> {
 class VisionApiCallback implements HttpApiCallback<Vision> {
 
     @Override
-    public void onResponse(Call<Vision> call, Response<Vision> response) {
+    public void onResponse(@NonNull Call<Vision> call, @NonNull Response<Vision> response) {
+        sendEvent(convertResponse(response));
+    }
+
+    @Override
+    public Vision convertResponse(Response<Vision> response) {
         if (response.body() == null || response.body().getResult() == null) {
-            sendEvent(Vision.INVALID);
+            return Vision.INVALID;
         }
 
         List<Face> faces = response.body().getResult().getFaces();
         if (faces == null || faces.size() == 0) {
-            sendEvent(Vision.INVALID);
+            return Vision.INVALID;
         } else {
             Vision result = response.body();
             result.setInValid(false);
-            sendEvent(result);
+            return result;
         }
     }
 
     @Override
-    public void onFailure(Call<Vision> call, Throwable t) {
+    public void onFailure(@NonNull Call<Vision> call, @NonNull Throwable t) {
 
     }
 }

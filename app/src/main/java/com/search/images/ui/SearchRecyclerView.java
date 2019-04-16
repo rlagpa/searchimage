@@ -30,8 +30,4 @@ public class SearchRecyclerView extends RecyclerView {
         this.adapter = adapter;
         setAdapter(this.adapter);
     }
-
-    public void updateRecyclerView() {
-        adapter.notifyDataSetChanged();
-    }
 }

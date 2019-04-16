@@ -2,6 +2,7 @@ package com.search.images.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,23 +29,24 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         this.context = context;
     }
 
-    public void initializeList() {
+    void initializeList() {
         voList.clear();
     }
 
-    public void setData(List<Document> voList) {
+    void setData(List<Document> voList) {
         this.voList.addAll(voList);
         notifyDataSetChanged();
     }
 
+    @NonNull
     @Override
-    public SearchHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SearchHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
         return new SearchHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final SearchHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final SearchHolder holder, final int position) {
         final Document item = voList.get(position);
 
         if (item == null) {
@@ -68,10 +70,10 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
         return voList == null ? 0 : voList.size();
     }
 
-    public class SearchHolder extends RecyclerView.ViewHolder {
+    class SearchHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.image_display) ImageView imageView;
 
-        public SearchHolder(View view) {
+        SearchHolder(View view) {
             super(view);
 
             ButterKnife.bind(this, view);

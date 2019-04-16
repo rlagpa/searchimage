@@ -61,6 +61,7 @@ public class VisionFragment extends Fragment {
                 .searchImageModule(new SearchImageModule(getContext()))
                 .build().inject(this);
 
+        //noinspection ConstantConditions
         imageUrl = getArguments().getString(Constants.Bundle.IMAGE_URL);
         loadData();
     }
@@ -105,16 +106,6 @@ public class VisionFragment extends Fragment {
             Toast.makeText(getContext(), getString(R.string.msg_not_avaliable), Toast.LENGTH_SHORT).show();
             return;
         }
-
-//        StringBuilder str = new StringBuilder();
-//        for (Face face : result.getResult().getFaces()) {
-//            str.append(face.toString(
-//                    getString(R.string.format_age),
-//                    getString(R.string.format_gender),
-//                    getString(R.string.format_accuracy)));
-//            str.append('\n');
-//        }
-//        text.setText(str.toString());
 
         text.setText(
                 result.getResult().getFaces().stream()

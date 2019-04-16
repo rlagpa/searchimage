@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@SuppressWarnings("WeakerAccess")
 @NoArgsConstructor
 @Getter
 public class VisionResult {

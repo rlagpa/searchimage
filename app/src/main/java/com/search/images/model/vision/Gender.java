@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class Gender {
+class Gender {
     float male;
     float female;
 }

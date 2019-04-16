@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class FaceAttribute {
+class FaceAttribute {
     Gender gender;
     float age;
 }
