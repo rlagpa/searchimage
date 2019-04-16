@@ -10,14 +10,26 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs{
+        releaseWithTest {
+            storeFile file("hamkey")
+            storePassword "ham1234"
+            keyAlias "key0"
+            keyPassword "ham1234"
+        }
+    }
+
     buildTypes {
         release {
-            debuggable false
+            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseWithTest
         }
         debug {
             debuggable true
+            signingConfig signingConfigs.releaseWithTest
         }
     }
     compileOptions {
