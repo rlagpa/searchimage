@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class MetaVO {
+public class Meta {
     int pageNum;
     boolean is_end;
     int pageable_count;

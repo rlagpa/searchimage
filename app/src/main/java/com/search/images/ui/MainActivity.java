@@ -22,8 +22,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        ImageFragment fragment = new ImageFragment();
-        transaction.replace(R.id.imageFragment, fragment);
+        SearchFragment fragment = new SearchFragment();
+        transaction.replace(R.id.searchFragment, fragment);
         transaction.commit();
     }
 }

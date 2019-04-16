@@ -6,10 +6,10 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @Getter
-public class VisionVO {
-    public static VisionVO INVALID = new VisionVO();
+public class Vision {
+    public static Vision INVALID = new Vision();
 
     @Setter
     boolean isInValid = true;
-    ResultVO result;
+    VisionResult result;
 }

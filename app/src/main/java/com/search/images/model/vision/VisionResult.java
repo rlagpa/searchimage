@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class ResultVO {
+public class VisionResult {
     int width;
     int height;
-    List<FaceVO> faces;
+    List<Face> faces;
 }

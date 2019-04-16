@@ -1,7 +1,7 @@
 package com.search.images.service;
 
 import com.search.images.config.APIProvider;
-import com.search.images.model.search.SearchResultVO;
+import com.search.images.model.search.SearchResult;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -10,12 +10,12 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Query;
 
-public interface HttpImageApi {
+public interface HttpSearchApi {
     @GET("v2/search/image")
-    Call<SearchResultVO> getSearchResult(@Header("authorization") String authorization,
-                                         @Query("query") String query,
-                                         @Query("page") int pageNum,
-                                         @Query("size") int size);
+    Call<SearchResult> getSearchResult(@Header("authorization") String authorization,
+                                       @Query("query") String query,
+                                       @Query("page") int pageNum,
+                                       @Query("size") int size);
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(APIProvider.current().searchHost())

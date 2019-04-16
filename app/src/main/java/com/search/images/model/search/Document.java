@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class DocumentVO {
+public class Document {
     public String collection;
     public String datetime;
     public String display_sitename;

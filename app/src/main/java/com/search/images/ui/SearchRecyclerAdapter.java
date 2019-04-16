@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.search.images.R;
 import com.search.images.config.Constants;
-import com.search.images.model.search.DocumentVO;
+import com.search.images.model.search.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +20,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdapter.SearchHolder> {
+public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAdapter.SearchHolder> {
     private Context context;
-    private List<DocumentVO> voList = new ArrayList<>();
+    private List<Document> voList = new ArrayList<>();
 
-    public ImageRecyclerAdapter(Context context) {
+    public SearchRecyclerAdapter(Context context) {
         this.context = context;
     }
 
@@ -32,7 +32,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
         voList.clear();
     }
 
-    public void setData(List<DocumentVO> voList) {
+    public void setData(List<Document> voList) {
         this.voList.addAll(voList);
         notifyDataSetChanged();
     }
@@ -45,7 +45,7 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
 
     @Override
     public void onBindViewHolder(final SearchHolder holder, final int position) {
-        final DocumentVO item = voList.get(position);
+        final Document item = voList.get(position);
 
         if (item == null) {
             return;
@@ -77,14 +77,14 @@ public class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageRecyclerAdap
             ButterKnife.bind(this, view);
         }
 
-        void bind(DocumentVO item) {
+        void bind(Document item) {
             Glide.with(context).load(item.image_url).into(imageView);
         }
 
         @OnClick(R.id.image_display)
         void onClick() {
             int position = getLayoutPosition();
-            DocumentVO item = voList.get(position);
+            Document item = voList.get(position);
 
             Intent intent = new Intent(context, VisionActivity.class);
             intent.putExtra(Constants.Intent.EXTRA_IMAGE_URL, item.image_url);

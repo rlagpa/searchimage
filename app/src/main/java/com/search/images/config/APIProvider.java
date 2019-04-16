@@ -2,7 +2,7 @@ package com.search.images.config;
 
 public interface APIProvider {
 
-    int ITEM_PER_PGAE = 20;
+    int ITEM_PER_PAGE = 20;
 
     static APIProvider current() {
         return Kakao.INSTANCE;

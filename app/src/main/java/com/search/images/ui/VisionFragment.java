@@ -1,6 +1,7 @@
 package com.search.images.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -16,8 +17,8 @@ import com.search.images.R;
 import com.search.images.config.Constants;
 import com.search.images.di.DaggerSearchImageComponent;
 import com.search.images.di.SearchImageModule;
-import com.search.images.model.vision.FaceVO;
-import com.search.images.model.vision.VisionVO;
+import com.search.images.model.vision.Face;
+import com.search.images.model.vision.Vision;
 import com.search.images.service.SearchService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -65,7 +66,7 @@ public class VisionFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_vision_result, container, false);
         ButterKnife.bind(this, view);
 
@@ -73,13 +74,13 @@ public class VisionFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Glide.with(getContext()).load(imageUrl).into(image);
     }
 
     public void loadData() {
-        if(TextUtils.isEmpty(imageUrl)) {
+        if (TextUtils.isEmpty(imageUrl)) {
             return;
         }
 
@@ -99,30 +100,30 @@ public class VisionFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onVisionResult(VisionVO result) {
-        if(result.isInValid()) {
+    public void onVisionResult(Vision result) {
+        if (result.isInValid()) {
             Toast.makeText(getContext(), getString(R.string.msg_not_avaliable), Toast.LENGTH_SHORT).show();
             return;
         }
 
+//        StringBuilder str = new StringBuilder();
+//        for (Face face : result.getResult().getFaces()) {
+//            str.append(face.toString(
+//                    getString(R.string.format_age),
+//                    getString(R.string.format_gender),
+//                    getString(R.string.format_accuracy)));
+//            str.append('\n');
+//        }
+//        text.setText(str.toString());
+
         text.setText(
                 result.getResult().getFaces().stream()
-                        .map(this::toFaceString)
+                        .map(face -> face.toString(getString(R.string.format_age), getString(R.string.format_gender), getString(R.string.format_accuracy)))
                         .collect(Collectors.joining("\n")));
     }
 
-    public String toFaceString(FaceVO face) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(getString(R.string.text_age, face.age()));
-        builder.append("   ");
-        builder.append(getString(R.string.text_gender, (face.isFemail())? getString(R.string.female) : getString(R.string.male)));
-        builder.append("   ");
-        builder.append(getString(R.string.text_accuracy, face.accuracy()));
-        return builder.toString();
-    }
-
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString(Constants.Bundle.IMAGE_URL, imageUrl);
     }

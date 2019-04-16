@@ -1,8 +1,8 @@
 package com.search.images.service;
 
 import com.search.images.config.APIProvider;
-import com.search.images.model.search.SearchResultVO;
-import com.search.images.model.vision.VisionVO;
+import com.search.images.model.search.SearchResult;
+import com.search.images.model.vision.Vision;
 
 import lombok.NoArgsConstructor;
 import retrofit2.Call;
@@ -10,18 +10,18 @@ import retrofit2.Call;
 @NoArgsConstructor
 public class SearchService {
 
-    private HttpImageApi httpImageApi = HttpImageApi.retrofit.create(HttpImageApi.class);
-    private HttpVisionApi httpVisionApi = HttpVisionApi.retrofit.create(HttpVisionApi.class);
+    private HttpSearchApi searchApi = HttpSearchApi.retrofit.create(HttpSearchApi.class);
+    private HttpVisionApi visionApi = HttpVisionApi.retrofit.create(HttpVisionApi.class);
 
     public void search(String query, int pageNum) {
-        final Call<SearchResultVO> call =
-                httpImageApi.getSearchResult(APIProvider.current().autoToken(), query, pageNum, APIProvider.ITEM_PER_PGAE);
+        final Call<SearchResult> call =
+                searchApi.getSearchResult(APIProvider.current().autoToken(), query, pageNum, APIProvider.ITEM_PER_PAGE);
         call.enqueue(new SearchApiCallback());
     }
 
     public void getVision(String imageUrl) {
-        final Call<VisionVO> call =
-                httpVisionApi.getSearchResult(APIProvider.current().autoToken(), imageUrl);
+        final Call<Vision> call =
+                visionApi.getSearchResult(APIProvider.current().autoToken(), imageUrl);
         call.enqueue(new VisionApiCallback());
     }
 }

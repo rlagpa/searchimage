@@ -18,7 +18,7 @@ import com.search.images.R;
 import com.search.images.config.Constants;
 import com.search.images.di.DaggerSearchImageComponent;
 import com.search.images.di.SearchImageModule;
-import com.search.images.model.search.SearchResultVO;
+import com.search.images.model.search.SearchResult;
 import com.search.images.service.SearchService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -31,15 +31,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ImageFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
     @Inject
-    ImageRecyclerAdapter adapter;
+    SearchRecyclerAdapter adapter;
     @Inject
     SearchService searchService;
 
-    @BindView(R.id.recycler_images)
-    protected ImageRecyclerView recyclerView;
+    @BindView(R.id.recycler_search)
+    protected SearchRecyclerView recyclerView;
     @BindView(R.id.text_search)
     protected EditText textSearch;
 
@@ -58,7 +58,7 @@ public class ImageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_image_recyclerview, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_recyclerview, container, false);
         ButterKnife.bind(this, view);
 
         if(savedInstanceState != null) {
@@ -114,7 +114,7 @@ public class ImageFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSearchResult(SearchResultVO result) {
+    public void onSearchResult(SearchResult result) {
         if (result.isInvalid()) {
             Toast.makeText(getContext(), getString(R.string.msg_not_found), Toast.LENGTH_SHORT).show();
             return;

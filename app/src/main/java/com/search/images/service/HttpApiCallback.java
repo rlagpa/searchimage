@@ -1,8 +1,8 @@
 package com.search.images.service;
 
-import com.search.images.model.search.SearchResultVO;
-import com.search.images.model.vision.FaceVO;
-import com.search.images.model.vision.VisionVO;
+import com.search.images.model.search.SearchResult;
+import com.search.images.model.vision.Face;
+import com.search.images.model.vision.Vision;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -19,45 +19,45 @@ public interface HttpApiCallback<T> extends Callback<T> {
     }
 }
 
-class SearchApiCallback implements HttpApiCallback<SearchResultVO> {
+class SearchApiCallback implements HttpApiCallback<SearchResult> {
 
     @Override
-    public void onResponse(Call<SearchResultVO> call, Response<SearchResultVO> response) {
+    public void onResponse(Call<SearchResult> call, Response<SearchResult> response) {
         if (response.body() == null) {
-            sendEvent(SearchResultVO.INVALID);
+            sendEvent(SearchResult.INVALID);
         } else {
-            SearchResultVO result = response.body();
+            SearchResult result = response.body();
             result.setInvalid(false);
             sendEvent(result);
         }
     }
 
     @Override
-    public void onFailure(Call<SearchResultVO> call, Throwable t) {
+    public void onFailure(Call<SearchResult> call, Throwable t) {
 
     }
 }
 
-class VisionApiCallback implements HttpApiCallback<VisionVO> {
+class VisionApiCallback implements HttpApiCallback<Vision> {
 
     @Override
-    public void onResponse(Call<VisionVO> call, Response<VisionVO> response) {
+    public void onResponse(Call<Vision> call, Response<Vision> response) {
         if (response.body() == null || response.body().getResult() == null) {
-            sendEvent(VisionVO.INVALID);
+            sendEvent(Vision.INVALID);
         }
 
-        List<FaceVO> faces = response.body().getResult().getFaces();
+        List<Face> faces = response.body().getResult().getFaces();
         if (faces == null || faces.size() == 0) {
-            sendEvent(VisionVO.INVALID);
+            sendEvent(Vision.INVALID);
         } else {
-            VisionVO result = response.body();
+            Vision result = response.body();
             result.setInValid(false);
             sendEvent(result);
         }
     }
 
     @Override
-    public void onFailure(Call<VisionVO> call, Throwable t) {
+    public void onFailure(Call<Vision> call, Throwable t) {
 
     }
 }

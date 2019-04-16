@@ -8,13 +8,13 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @Getter
-public class SearchResultVO {
+public class SearchResult {
 
-    public static SearchResultVO INVALID = new SearchResultVO();
+    public static SearchResult INVALID = new SearchResult();
 
     @Setter
     boolean invalid = true;
 
-    MetaVO meta;
-    List<DocumentVO> documents;
+    Meta meta;
+    List<Document> documents;
 }

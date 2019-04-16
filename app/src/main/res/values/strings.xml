@@ -7,7 +7,7 @@
     <string name="msg_not_avaliable">사람 얼굴이 아닌거 같아요.</string>
     <string name="male">남성</string>
     <string name="female">여성</string>
-    <string name="text_age">나이 : %d</string>
-    <string name="text_gender">성별 : %s</string>
-    <string name="text_accuracy">정확도 : %d</string>
+    <string name="format_age">나이 : %d</string>
+    <string name="format_gender">성별 : %s</string>
+    <string name="format_accuracy">정확도 : %d</string>
 </resources>

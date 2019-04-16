@@ -3,7 +3,7 @@ package com.search.images.di;
 import android.content.Context;
 
 import com.search.images.service.SearchService;
-import com.search.images.ui.ImageRecyclerAdapter;
+import com.search.images.ui.SearchRecyclerAdapter;
 
 import javax.inject.Singleton;
 
@@ -21,8 +21,8 @@ public class SearchImageModule {
     public SearchImageModule(Context context) { this.context = context; }
 
     @Provides
-    ImageRecyclerAdapter imageRecyclerAdapter() {
-        return new ImageRecyclerAdapter(context);
+    SearchRecyclerAdapter imageRecyclerAdapter() {
+        return new SearchRecyclerAdapter(context);
     }
 
     @Provides @Singleton
